@@ -25,7 +25,7 @@ def delete_data(cursor):
         cursor.execute(f"DROP TABLE contact_info")
 
 
-def help():
+def help(cursor):
     print(command_list.keys())
 
 
