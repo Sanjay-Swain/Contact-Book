@@ -15,7 +15,7 @@ print("Type help to know the commands")
 while True:
     Command = input("--> ").lower()
     if Command.split()[0] in command_list.keys():
-        command_list[Command]()
+        command_list[Command](c)
     elif Command == 'save' or Command == 'exit':
         break
     else:
