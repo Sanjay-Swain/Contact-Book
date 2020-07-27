@@ -28,6 +28,13 @@ def delete_data(cursor):
         cursor.execute(f"DELETE FROM contact_info WHERE name = '{data}'")
 
 
+def update(cursor):
+    identity = input('Enter the name of the entry you want to change: ').lower()
+    data_type = input('WHat do you want to change: Name, Phone, Email: ').lower()
+    new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
+    cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
+
+
 def help(cursor):
     print(cursor)
     print(command_list.keys())
@@ -38,4 +45,5 @@ command_list = {
     'delete': delete_data,
     'find': get_contact_details,
     'help': help,
+    'update': update,
 }
