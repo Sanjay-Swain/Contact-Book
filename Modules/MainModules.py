@@ -1,3 +1,6 @@
+from prettytable import PrettyTable
+
+
 def data_insertion(cursor):
     name = input('Enter the name: ')
     phone = input('Enter the phone number :')
@@ -8,7 +11,8 @@ def data_insertion(cursor):
 def check_all_contacts(cursor):
     for row in cursor.execute("SELECT * FROM contact_info "):
         if len(row) > 0:
-            print(row)
+            tab.add_row(list(row))
+    print(tab)
 
 
 def get_contact_details(cursor):
@@ -16,8 +20,9 @@ def get_contact_details(cursor):
     if name_id == 'all':
         check_all_contacts(cursor)
     else:
-        cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'")
-        print(cursor.fetchall())
+        for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
+            tab.add_row(list(row))
+        print(tab)
 
 
 def delete_data(cursor):
@@ -30,7 +35,7 @@ def delete_data(cursor):
 
 def update(cursor):
     identity = input('Enter the name of the entry you want to change: ').lower()
-    data_type = input('WHat do you want to change: Name, Phone, Email: ').lower()
+    data_type = input('What do you want to change: Name, Phone, Email: ').lower()
     new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
     cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
 
@@ -39,6 +44,8 @@ def help(cursor):
     print(cursor)
     print(command_list.keys())
 
+
+tab = PrettyTable(['Name', 'Phone', 'Email'])
 
 command_list = {
     'create': data_insertion,
