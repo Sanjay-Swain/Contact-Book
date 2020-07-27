@@ -29,6 +29,7 @@ def delete_data(cursor):
     data = input('Enter the name: ')
     if data == 'all':
         cursor.execute(f"DROP TABLE contact_info")
+        cursor.execute("CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))")
     else:
         cursor.execute(f"DELETE FROM contact_info WHERE name = '{data}'")
 
