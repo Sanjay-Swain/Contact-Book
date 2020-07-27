@@ -13,6 +13,7 @@ def check_all_contacts(cursor):
         if len(row) > 0:
             tab.add_row(list(row))
     print(tab)
+    tab.clear_rows()
 
 
 def get_contact_details(cursor):
@@ -23,12 +24,14 @@ def get_contact_details(cursor):
         for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
             tab.add_row(list(row))
         print(tab)
+        tab.clear_rows()
 
 
 def delete_data(cursor):
     data = input('Enter the name: ')
     if data == 'all':
         cursor.execute(f"DROP TABLE contact_info")
+        cursor.execute("CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))")
     else:
         cursor.execute(f"DELETE FROM contact_info WHERE name = '{data}'")
 
