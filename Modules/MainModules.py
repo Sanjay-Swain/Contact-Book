@@ -13,6 +13,7 @@ def check_all_contacts(cursor):
         if len(row) > 0:
             tab.add_row(list(row))
     print(tab)
+    tab.clear_rows()
 
 
 def get_contact_details(cursor):
@@ -23,6 +24,7 @@ def get_contact_details(cursor):
         for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
             tab.add_row(list(row))
         print(tab)
+        tab.clear_rows()
 
 
 def delete_data(cursor):
