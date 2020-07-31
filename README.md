@@ -13,7 +13,8 @@ compiled version for windows.
 > which usually comes preinstalled in normal python.
 
 ##### For normal users
->  A current version of Windows
+>  A current version of Windows for running the executable file. It also
+>  should work on so-called ancient computers.
 
 ### Installing
 You can simply download the code and run it on console. Or download the
@@ -23,7 +24,7 @@ existing build and run it.
 Well you already got it in your computer just go there and use it.
 > NOTE: Even if you delete the executable file or the code the data you
 > entered will remain in the database. To completely delete those. Go to
-> the location and delete this:
+> the location below and delete the file:
 > > C:/Contact Book/Contacts.db
 
 ## Build with
@@ -32,16 +33,18 @@ Well you already got it in your computer just go there and use it.
 
 ## Contributing
 I don't know why you want to contribute to this lame project but if you
-seriously want to just send a pull request and I will see that.
+seriously want to just send a pull request and I will check that.
 
 ## Author
 * **Sanjay Kumar Swain** - A noob
 
 ## Licence
-This project is licenced under public licence - Means do what the fuck
-you want.
+This project is licenced under public licence - Means do whatever you
+want.
 
 ## Acknowledgement
-* First of all a hats off to you who is reading all this boring stuff
-  and actually got this far.
-* It is my first project publishing on GitHub for no reasons. Cheers!!
+* First of all I don't know why you are reading this boring readme file.
+  You are wasting your time.
+* I created this just for fun.
+* It is my first project which I published on GitHub for no reasons.
+  Cheers!!

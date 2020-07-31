@@ -1,6 +1,6 @@
 # v0.3
 from Modules.MainModules import *
-
+import os
 
 os.makedirs('C:/Contact Book', exist_ok=True)
 conn = sqlite3.connect('C:/Contact Book/contacts.db')

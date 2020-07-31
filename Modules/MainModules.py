@@ -1,7 +1,6 @@
 from prettytable import PrettyTable
 from colorama import Fore, Style
 import sqlite3
-import os
 
 
 def data_insertion(cursor):
@@ -80,6 +79,7 @@ def update(cursor):
 def help(cursor):
     print(cursor)
     print(command_list.keys())
+    print("If you want to print/delete every data just type 'all' in the enter name prompt")
 
 
 tab = PrettyTable(['Name', 'Phone', 'Email'])
@@ -91,3 +91,6 @@ command_list = {
     'help': help,
     'update': update,
 }
+
+if __name__ == '__main__':
+    print('You are currently running the module directly.')
