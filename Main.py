@@ -1,7 +1,5 @@
-# v0.2
+# v0.3
 from Modules.MainModules import *
-import sqlite3
-import os
 
 
 os.makedirs('C:/Contact Book', exist_ok=True)

@@ -1,5 +1,7 @@
 from prettytable import PrettyTable
 from colorama import Fore, Style
+import sqlite3
+import os
 
 
 def data_insertion(cursor):
@@ -10,11 +12,14 @@ def data_insertion(cursor):
 
 
 def check_all_contacts(cursor):
-    for row in cursor.execute("SELECT * FROM contact_info "):
-        if len(row) > 0:
-            tab.add_row(list(row))
-    print(tab)
-    tab.clear_rows()
+    if check_contact_exist(cursor, None, True):
+        for row in cursor.execute("SELECT * FROM contact_info "):
+            if len(row) > 0:
+                tab.add_row(list(row))
+        print(tab)
+        tab.clear_rows()
+    else:
+        print('There are no contacts in your contact book add some data to check everything.')
 
 
 def get_contact_details(cursor):
@@ -22,10 +27,13 @@ def get_contact_details(cursor):
     if name_id == 'all':
         check_all_contacts(cursor)
     else:
-        for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
-            tab.add_row(list(row))
-        print(tab)
-        tab.clear_rows()
+        if check_contact_exist(cursor, name_id):
+            for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
+                tab.add_row(list(row))
+            print(tab)
+            tab.clear_rows()
+        else:
+            print('The data you are searching for does not exist. Please check the spelling.')
 
 
 def delete_data(cursor):
@@ -37,18 +45,36 @@ def delete_data(cursor):
         cursor.execute(f"DELETE FROM contact_info WHERE name = '{data}'")
 
 
+def check_contact_exist(cursor, name, everything=False):
+    if not everything:
+        cursor.execute(f"SELECT * FROM contact_info WHERE Name = '{name}'")
+        return not len(cursor.fetchall()) == 0
+    else:
+        cursor.execute(f"SELECT * FROM contact_info")
+        return not len(cursor.fetchall()) == 0
+
+
 def update(cursor):
-    identity = input('Enter the name of the entry you want to change: ').lower()
-    data_type = input('What do you want to change: Name, Phone, Email: ').lower()
-    new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
-    for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
-        print('changes:')
-        print(Fore.RED + old_data[0], end='')
-        print(Style.RESET_ALL, end='')
-        print('   --->   ', end='')
-        print(Fore.LIGHTGREEN_EX + new_data, end='')
-        print(Style.RESET_ALL)
-    cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
+    try:
+        while True:
+            identity = input('Enter the name of the entry you want to change: ').lower()
+            if not(check_contact_exist(cursor, identity)):
+                print('The data you ae searching for does not exist. Please check the spelling.')
+                break
+            data_type = input('What do you want to change: Name, Phone, Email: ').lower()
+            new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
+            for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
+                print('changes:')
+                print(Fore.RED + old_data[0], end='')
+                print(Style.RESET_ALL, end='')
+                print('   --->   ', end='')
+                print(Fore.LIGHTGREEN_EX + new_data, end='')
+                print(Style.RESET_ALL)
+            cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
+            break
+    except sqlite3.OperationalError:
+        print(f'Oops!! There are no columns named {data_type}')
+        print('You must select from Name, Phone & Email')
 
 
 def help(cursor):
