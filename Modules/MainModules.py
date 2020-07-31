@@ -1,4 +1,5 @@
 from prettytable import PrettyTable
+from colorama import Fore, Style
 
 
 def data_insertion(cursor):
@@ -42,7 +43,11 @@ def update(cursor):
     new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
     for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
         print('changes:')
-        print(old_data[0] + '  --->  ' + new_data)
+        print(Fore.RED + old_data[0], end='')
+        print(Style.RESET_ALL, end='')
+        print('   --->   ', end='')
+        print(Fore.LIGHTGREEN_EX + new_data, end='')
+        print(Style.RESET_ALL)
     cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
 
 
