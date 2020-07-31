@@ -61,7 +61,7 @@ def update(cursor):
                 print('The data you ae searching for does not exist. Please check the spelling.')
                 break
             data_type = input('What do you want to change: Name, Phone, Email: ').lower()
-            new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
+            new_data = input(f"Enter the {data_type} of {identity} you want to change to: ")
             for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
                 print('changes:')
                 print(Fore.RED + old_data[0], end='')
