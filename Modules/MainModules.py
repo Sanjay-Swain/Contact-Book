@@ -40,6 +40,9 @@ def update(cursor):
     identity = input('Enter the name of the entry you want to change: ').lower()
     data_type = input('What do you want to change: Name, Phone, Email: ').lower()
     new_data = input(f"Enter the {data_type} of {identity} you want to change to: ").lower()
+    for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
+        print('changes:')
+        print(old_data[0] + '  --->  ' + new_data)
     cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
 
 
