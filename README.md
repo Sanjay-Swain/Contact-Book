@@ -13,7 +13,7 @@ compiled version for windows.
 > which usually comes preinstalled in normal python.
 
 ##### For normal users
->  A current version of Windows for running the executable file. It also
+>  A good version of Windows which can run an executable file. It also
 >  should work on so-called ancient computers.
 
 ### Installing
@@ -38,13 +38,5 @@ seriously want to just send a pull request and I will check that.
 ## Author
 * **Sanjay Kumar Swain** - A noob
 
-## Licence
-This project is licenced under public licence - Means do whatever you
-want.
-
-## Acknowledgement
-* First of all I don't know why you are reading this boring readme file.
-  You are wasting your time.
-* I created this just for fun.
-* It is my first project which I published on GitHub for no reasons.
-  Cheers!!
+## Note
+First of all I don't know why you are reading this boring readme file. You are wasting your time. I created this just for fun. It is my first project which I published on GitHub for no reasons. Cheers!!
