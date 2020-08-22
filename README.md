@@ -8,7 +8,7 @@ the program on an IDE for development or check on the releases tab for
 compiled version for windows.
 
 ### Prerequisite
-##### For developers
+##### To check the code
 > You just need python 3 installed on your computer with sqlite3 library
 > which usually comes preinstalled in normal python.
 
@@ -21,22 +21,11 @@ You can simply download the code and run it on console. Or download the
 existing build and run it.
 
 ## Using the program
-Well you already got it in your computer just go there and use it.
+Just download the source code or executable file and use it.
 > NOTE: Even if you delete the executable file or the code the data you
 > entered will remain in the database. To completely delete those. Go to
 > the location below and delete the file:
-> > C:/Contact Book/Contacts.db
-
-## Build with
-* [Pyinstaller](https://www.pyinstaller.org) - A very basic program
-  building tool.
-
-## Contributing
-I don't know why you want to contribute to this lame project but if you
-seriously want to just send a pull request and I will check that.
-
-## Author
-* **Sanjay Kumar Swain** - A noob
+> `C:/Contact Book/Contacts.db`
 
 ## Note
-First of all I don't know why you are reading this boring readme file. You are wasting your time. I created this just for fun. It is my first project which I published on GitHub for no reasons. Cheers!!
+This is my first project and GitHub repository. Thanks for reading!
