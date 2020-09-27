@@ -77,7 +77,6 @@ def update(cursor):
 
 
 def help(cursor):
-    print(cursor)
     print(command_list.keys())
     print("If you want to print/delete every data just type 'all' in the enter name prompt")
 

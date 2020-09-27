@@ -1,9 +1,9 @@
-# v1.0
+# v1.1
 from Modules.MainModules import *
 import os
 
-os.makedirs('C:/Contact Book', exist_ok=True)
-conn = sqlite3.connect('C:/Contact Book/contacts.db')
+os.makedirs('Contacts', exist_ok=True)
+conn = sqlite3.connect('Contacts/contacts.db')
 
 c = conn.cursor()
 c.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
