@@ -11,7 +11,7 @@ c.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25
 print("Welcome")
 print("Type help to know the commands")
 while True:
-    Command = input("--> ").lower().strip()
+    Command = input(" --> ").lower().strip()
     if Command in command_list.keys():
         command_list[Command](c)
     elif Command == 'save' or Command == 'exit':
