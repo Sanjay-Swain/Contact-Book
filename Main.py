@@ -1,23 +1,28 @@
 # v1.1
-from Modules.MainModules import *
-import os
+from Modules.MainModules import execute, os, cursor, conn
 
-os.makedirs('Contacts', exist_ok=True)
-conn = sqlite3.connect('Contacts/contacts.db')
-
-c = conn.cursor()
-c.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
 
 print("Welcome")
 print("Type help to know the commands")
-while True:
-    Command = input(" --> ").lower().strip()
-    if Command in command_list.keys():
-        command_list[Command](c)
-    elif Command == 'save' or Command == 'exit':
-        break
-    else:
-        print('Command not found try again.')
+print()
 
-conn.commit()
-conn.close()
+cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
+
+
+def main():
+    running = True
+
+    while running:
+        command_input = input("---> ").strip().split()
+        if command_input[0] == "exit":
+            verify = input("Are you sure you want to leave (Y|N) :")
+            if verify[0].strip().lower() == 'y':
+                running = False
+                break
+        execute(command_input)
+    
+    conn.commit()
+    conn.close()
+
+if __name__ == "__main__":
+    main()

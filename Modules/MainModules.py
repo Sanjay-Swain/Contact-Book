@@ -1,95 +1,128 @@
 from prettytable import PrettyTable
 from colorama import Fore, Style
 import sqlite3
+try:
+    from Modules.HelpModule import help
+except ModuleNotFoundError:
+    from HelpModule import help
+import os
 
 
-def data_insertion(cursor):
-    name = input('Enter the name: ')
-    phone = input('Enter the phone number :')
-    email = input('Enter the email ID :')
-    cursor.execute(f"INSERT INTO contact_info VALUES('{name}', '{phone}', '{email}')")
+def add(name, phone, email):
+    command = f"INSERT INTO contact_info VALUES ('{name}', '{phone}', '{email}')"
+    cursor.execute(command)
 
 
-def check_all_contacts(cursor):
-    if check_contact_exist(cursor, None, True):
+def delete(name):
+    cursor.execute(f"DELETE FROM contact_info WHERE name = '{name}'")
+
+
+def preview():
+    if check_contact_exist(None, None, True):
         for row in cursor.execute("SELECT * FROM contact_info "):
             if len(row) > 0:
                 tab.add_row(list(row))
         print(tab)
         tab.clear_rows()
     else:
-        print('There are no contacts in your contact book add some data to check everything.')
+        print('There are no contacts in your contact book.')
 
 
-def get_contact_details(cursor):
-    name_id = input("Enter the name: ")
-    if name_id == 'all':
-        check_all_contacts(cursor)
+def search(data_type, data_val):
+    if check_contact_exist(data_type, data_val):
+        for row in cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} = '{data_val}'"):
+            tab.add_row(list(row))
+        print(tab)
+        tab.clear_rows()
     else:
-        if check_contact_exist(cursor, name_id):
-            for row in cursor.execute(f"SELECT * FROM contact_info WHERE name = '{str(name_id)}'"):
-                tab.add_row(list(row))
-            print(tab)
-            tab.clear_rows()
-        else:
-            print('The data you are searching for does not exist. Please check the spelling.')
+        print('The data you are searching for does not exist. Please check the spelling.')
 
 
-def delete_data(cursor):
-    data = input('Enter the name: ')
-    if data == 'all':
-        cursor.execute(f"DROP TABLE contact_info")
-        cursor.execute("CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))")
-    else:
-        cursor.execute(f"DELETE FROM contact_info WHERE name = '{data}'")
-
-
-def check_contact_exist(cursor, name, everything=False):
+def check_contact_exist(data_type, data_val, everything=False):
     if not everything:
-        cursor.execute(f"SELECT * FROM contact_info WHERE Name = '{name}'")
+        cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} = '{data_val}'")
         return not len(cursor.fetchall()) == 0
     else:
         cursor.execute(f"SELECT * FROM contact_info")
         return not len(cursor.fetchall()) == 0
 
 
-def update(cursor):
+def update(name, data_type):
     try:
-        while True:
-            identity = input('Enter the name of the entry you want to change: ').lower()
-            if not(check_contact_exist(cursor, identity)):
-                print('The data you ae searching for does not exist. Please check the spelling.')
-                break
-            data_type = input('What do you want to change: Name, Phone, Email: ').lower()
-            new_data = input(f"Enter the {data_type} of {identity} you want to change to: ")
-            for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{identity}'"):
+        if not(check_contact_exist("Name", name)):
+            print('The data you are searching for does not exist. Please check the spelling.')
+        else:
+            new_data = input("Enter the data you want to change: ")
+            
+            for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{name}'"):
                 print('changes:')
                 print(Fore.RED + old_data[0], end='')
                 print(Style.RESET_ALL, end='')
                 print('   --->   ', end='')
                 print(Fore.LIGHTGREEN_EX + new_data, end='')
                 print(Style.RESET_ALL)
-            cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{identity}'")
-            break
+            cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{name}'")
     except sqlite3.OperationalError:
         print(f'Oops!! There are no columns named {data_type}')
         print('You must select from Name, Phone & Email')
 
 
-def help(cursor):
-    print(command_list.keys())
-    print("If you want to print/delete every data just type 'all' in the enter name prompt")
+def clear():
+    os.system('cls' if os.name=='nt' else 'clear')
+
+
+def execute(commands: list):
+    """
+    :param func: This is a list containing [function, data]
+    """
+    
+    command_len = len(commands)
+    if command_len > 0 and commands[0] in command_list:
+        if (command_len < command_requirments[commands[0]]):
+            print("More information required to execute the given command")
+            print("Type help for more information")
+        elif commands[0] == "create":
+            add(" ".join(commands[3:]), commands[2], commands[1])
+        elif commands[0] == "delete":
+            delete(commands[1])
+        elif commands[0] == "update":
+            update(" ".join(commands[2:]), commands[1])
+        elif commands[0] == "find":
+            search(commands[1], commands[2])
+        elif commands[0] == "preview":
+            preview()
+        elif commands[0] == "save":
+            conn.commit()
+        elif commands[0] == "help":
+            try:
+                help(commands[1])
+            except IndexError:
+                help()
+        elif commands == "clear":
+            clear()
+    else:
+        print("Invalid command")
 
 
 tab = PrettyTable(['Name', 'Phone', 'Email'])
 
-command_list = {
-    'create': data_insertion,
-    'delete': delete_data,
-    'find': get_contact_details,
-    'help': help,
-    'update': update,
+command_list = ["create", "delete", "update", "find", "preview", "save", "exit", "help", "clear"]
+command_requirments = {
+    "create": 4,
+    "delete": 2,
+    "update": 3,
+    "find": 3,
+    "preview": 1,
+    "save": 1,
+    "help": 1,
+    "clear": 1
 }
+
+os.makedirs('Contacts', exist_ok=True)
+
+conn = sqlite3.connect('Contacts/contacts.db')
+
+cursor = conn.cursor()
 
 if __name__ == '__main__':
     print('You are currently running the module directly.')
