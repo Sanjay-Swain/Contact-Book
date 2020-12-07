@@ -145,3 +145,6 @@ Contacts
 # IDE configuartion files
 .idea
 .vscode
+
+# Pyinstaller Files
+dist

@@ -1,6 +1,8 @@
 # v2.0-Alpha
 from Modules.MainModules import execute, os, cursor, conn
+import colorama
 
+colorama.init()
 
 print("Welcome")
 print("Type help to know the commands")
