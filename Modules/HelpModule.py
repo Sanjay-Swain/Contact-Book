@@ -12,7 +12,7 @@ Commands:
 
 
 create_help_str = """Command:
-    create [email] [name] [phone]
+    create <name> <phone> <email>
 For example to add a contact:
     create abc@domain.com 1234567890 <full name>
 NOTE: All of the details be separated by spaces and all last trailing data will be considered as a part of name."""
