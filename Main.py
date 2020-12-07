@@ -1,21 +1,28 @@
 # v1.1
-from Modules.MainModules import execute, running, os, c, conn
+from Modules.MainModules import execute, os, cursor, conn
 
-
-os.makedirs('Contacts', exist_ok=True)
 
 print("Welcome")
 print("Type help to know the commands")
-# This part is broken for now after back-end update!
+print()
 
-while running:
-    Command = input("---> ").lower().strip()
-    if Command in command_list.keys():
-        command_list[Command](c)
-    elif Command == 'save' or Command == 'exit':
-        break
-    else:
-        print('Command not found try again.')
+cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
 
-conn.commit()
-conn.close()
+
+def main():
+    running = True
+
+    while running:
+        command_input = input("---> ").strip().split()
+        if command_input[0] == "exit":
+            verify = input("Are you sure you want to leave (Y|N) :")
+            if verify[0].strip().lower() == 'y':
+                running = False
+                break
+        execute(command_input)
+    
+    conn.commit()
+    conn.close()
+
+if __name__ == "__main__":
+    main()

@@ -9,7 +9,9 @@ import os
 
 
 def add(name, phone, email):
-    cursor.execute(f"INSERT INTO contact_info VALUES('{name}', '{phone}', '{email}')")
+    command = f"INSERT INTO contact_info VALUES ('{name}', '{phone}', '{email}')"
+    print(command)
+    cursor.execute(command)
 
 
 def delete(name):
@@ -46,12 +48,13 @@ def check_contact_exist(data_type, data_val, everything=False):
         return not len(cursor.fetchall()) == 0
 
 
-def update(name, data_type, new_data):
+def update(name, data_type):
     try:
-        while True:
-            if not(check_contact_exist("name", name)):
-                print('The data you are searching for does not exist. Please check the spelling.')
-                break
+        if not(check_contact_exist("Name", name)):
+            print('The data you are searching for does not exist. Please check the spelling.')
+        else:
+            new_data = input("Enter the data you want to change: ")
+            
             for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{name}'"):
                 print('changes:')
                 print(Fore.RED + old_data[0], end='')
@@ -60,7 +63,6 @@ def update(name, data_type, new_data):
                 print(Fore.LIGHTGREEN_EX + new_data, end='')
                 print(Style.RESET_ALL)
             cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{name}'")
-            break
     except sqlite3.OperationalError:
         print(f'Oops!! There are no columns named {data_type}')
         print('You must select from Name, Phone & Email')
@@ -74,25 +76,24 @@ def execute(commands: list):
     """
     :param func: This is a list containing [function, data]
     """
+    print(commands)
     command_len = len(commands)
     if command_len > 0 and commands[0] in command_list:
         if (command_len < command_requirments[commands[0]]):
             print("More information required to execute the given command")
             print("Type help for more information")
         elif commands[0] == "create":
-            add(commands[1], commands[2], commands[3])
+            add(" ".join(commands[3:]), commands[2], commands[1])
         elif commands[0] == "delete":
             delete(commands[1])
         elif commands[0] == "update":
-            update(commands[1], commands[2], commands[4])
+            update(" ".join(commands[2:]), commands[1])
         elif commands[0] == "find":
             search(commands[1], commands[2])
         elif commands[0] == "preview":
             preview()
         elif commands[0] == "save":
             conn.commit()
-        elif commands[0] == "exit":
-            running = False
         elif commands[0] == "help":
             try:
                 help(commands[1])
@@ -100,12 +101,13 @@ def execute(commands: list):
                 help()
         elif commands == "clear":
             clear()
+    else:
         print("Invalid command")
 
 
 tab = PrettyTable(['Name', 'Phone', 'Email'])
 
-command_list = ["create", "delete", "update", "find", "preview", "save", "exit"]
+command_list = ["create", "delete", "update", "find", "preview", "save", "exit", "help", "clear"]
 command_requirments = {
     "create": 4,
     "delete": 2,
@@ -113,16 +115,15 @@ command_requirments = {
     "find": 3,
     "preview": 1,
     "save": 1,
-    "exit": 1,
     "help": 1,
     "clear": 1
 }
 
+os.makedirs('Contacts', exist_ok=True)
+
 conn = sqlite3.connect('Contacts/contacts.db')
 
 cursor = conn.cursor()
-cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
-running = True
 
 if __name__ == '__main__':
     print('You are currently running the module directly.')

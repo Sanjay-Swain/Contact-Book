@@ -3,7 +3,7 @@ NOTE: For commands like create and delete the trailing data will be considered a
 Commands:
     create <email> <Phone> <Name>
     delete <name>
-    update <old name to be changed> <data to be changed: name|phone|email> <new data>
+    update <data to be changed: name|phone|email> <old name to be changed>
     find <data to be found: name|phone|email> <data to search>
     preview
     save
@@ -22,9 +22,9 @@ delete_help_str = """Command:
 NOTE: You must enter the complete exact name (it is case sensitive too)."""
 
 update_help_str = """Command:
-    update <old name to be changed> <data to be changed: name|phone|email> <new data>
+    update <data to be changed: name|phone|email> <old name to be changed>
 Example to change phone number of a contact:
-    update <Name> phone 5555555555
+    update phone <Name> 
 NOTE: Here name is used as an identifier to identify which contact you need to change.
 There will be issues if you have two contact with same exact name."""
 
