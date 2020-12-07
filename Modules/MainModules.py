@@ -10,7 +10,6 @@ import os
 
 def add(name, phone, email):
     command = f"INSERT INTO contact_info VALUES ('{name}', '{phone}', '{email}')"
-    print(command)
     cursor.execute(command)
 
 
@@ -76,7 +75,7 @@ def execute(commands: list):
     """
     :param func: This is a list containing [function, data]
     """
-    print(commands)
+    
     command_len = len(commands)
     if command_len > 0 and commands[0] in command_list:
         if (command_len < command_requirments[commands[0]]):
