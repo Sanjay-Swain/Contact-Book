@@ -1,5 +1,5 @@
-# v2.0-Alpha
-from Modules.MainModules import execute, os, cursor, conn
+# v2.0
+from Modules.Commands import execute, os, cursor, conn
 import colorama
 
 colorama.init()

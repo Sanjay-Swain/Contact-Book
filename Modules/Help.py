@@ -46,29 +46,29 @@ exit_help_str = """This will commit recent changes to the database and will stop
 
 clear_help_str = """This will clear the console window"""
 
-def help(command=None):
+help_func = {
+    "create": create_help_str,
+    "delete": delete_help_str,
+    "update": update_help_str,
+    "save": save_help_str,
+    "find": find_help_str,
+    "exit": exit_help_str,
+    "preview": preview_help_str,
+    "clear": clear_help_str,
+    "help": help_str
+}
+
+def help_command(command=None):
     if command is None:
-        print(help_str)
-    elif command == "create":
-        print(create_help_str)
-    elif command == "delete":
-        print(delete_help_str)
-    elif command == "update":
-        print(update_help_str)
-    elif command == "save":
-        print(save_help_str)
-    elif command == "find":
-        print(find_help_str)
-    elif command == "exit":
-        print(exit_help_str)
-    elif command == "preview":
-        print(preview_help_str)
-    elif command == "clear":
-        print(clear_help_str)
-    else:
+        command = "help"
+    try:
+        print(help_func[command])
+    except KeyError:
         print("Well it seems like your command doesn't exist.. :(")
 
+
+
 if __name__ == "__main__":
-    print(help_str)
-    print(update_help_str)
-    print(create_help_str)
+    print("=====You are running the program directly=====")
+    help_command("create")
+    help_command("gjvasd")

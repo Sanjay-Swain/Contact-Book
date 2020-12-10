@@ -2,9 +2,9 @@ from prettytable import PrettyTable
 from colorama import Fore, Style
 import sqlite3
 try:
-    from Modules.HelpModule import help
+    from Modules.Help import help_command
 except ModuleNotFoundError:
-    from HelpModule import help
+    from Help import help_command
 import os
 
 
@@ -15,6 +15,15 @@ def add(name, phone, email):
 
 def delete(name):
     cursor.execute(f"DELETE FROM contact_info WHERE name = '{name}'")
+
+
+def check_contact_exist(data_type, data_val, everything=False):
+    if not everything:
+        cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} = '{data_val}'")
+        return not len(cursor.fetchall()) == 0
+    else:
+        cursor.execute(f"SELECT * FROM contact_info")
+        return not len(cursor.fetchall()) == 0
 
 
 def preview():
@@ -36,15 +45,6 @@ def search(data_type, data_val):
         tab.clear_rows()
     else:
         print('The data you are searching for does not exist. Please check the spelling.')
-
-
-def check_contact_exist(data_type, data_val, everything=False):
-    if not everything:
-        cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} = '{data_val}'")
-        return not len(cursor.fetchall()) == 0
-    else:
-        cursor.execute(f"SELECT * FROM contact_info")
-        return not len(cursor.fetchall()) == 0
 
 
 def update(name, data_type):
@@ -95,9 +95,9 @@ def execute(commands: list):
             conn.commit()
         elif commands[0] == "help":
             try:
-                help(commands[1])
+                help_command(commands[1])
             except IndexError:
-                help()
+                help_command()
         elif commands == "clear":
             clear()
     else:
@@ -118,11 +118,13 @@ command_requirments = {
     "clear": 1
 }
 
-os.makedirs('Contacts', exist_ok=True)
+if __name__ != "__main__":
+    os.makedirs('Contacts', exist_ok=True)
 
-conn = sqlite3.connect('Contacts/contacts.db')
+    conn = sqlite3.connect('Contacts/contacts.db')
 
-cursor = conn.cursor()
+    cursor = conn.cursor()
+
 
 if __name__ == '__main__':
     print('You are currently running the module directly.')
