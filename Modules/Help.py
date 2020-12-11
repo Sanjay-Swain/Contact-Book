@@ -16,7 +16,7 @@ You can also type help <command> to get a little more info
 NOTE: The command must be run on same order it is shown.
 NOTE: commands are case sensitive""" + Style.RESET_ALL
 create_help_str = """Command:
-    create <name> <phone> <email>
+    create <email> <phone> <name>
 For example to add a contact:
     create abc@domain.com 1234567890 <full name>
 """ + Fore.RED + "NOTE: All of the details be separated by spaces and all last trailing data will be considered as a part of name." + Style.RESET_ALL

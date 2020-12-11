@@ -1,4 +1,4 @@
-# v2.0
+# v2.1
 from Modules.Commands import execute, os, cursor, conn
 import colorama
 
@@ -8,7 +8,7 @@ print("Welcome")
 print("Type help to know the commands")
 print()
 
-cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25), Phone char(25), Email char(40))')
+cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25) PRIMARY KEY, Phone char(25), Email char(40))')
 
 
 def main():

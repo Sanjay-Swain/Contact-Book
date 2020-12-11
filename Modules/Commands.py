@@ -38,13 +38,10 @@ def preview():
 
 
 def search(data_type, data_val):
-    if check_contact_exist(data_type, data_val):
-        for row in cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} = '{data_val}'"):
-            tab.add_row(list(row))
-        print(tab)
-        tab.clear_rows()
-    else:
-        print('The data you are searching for does not exist. Please check the spelling.')
+    for row in cursor.execute(f"SELECT * FROM contact_info WHERE {data_type.capitalize()} LIKE '%{data_val}%'"):
+        tab.add_row(list(row))
+    print(tab)
+    tab.clear_rows()
 
 
 def update(name, data_type):
@@ -52,7 +49,7 @@ def update(name, data_type):
         if not(check_contact_exist("Name", name)):
             print('The data you are searching for does not exist. Please check the spelling.')
         else:
-            new_data = input("Enter the data you want to change: ")
+            new_data = input("Enter the new data you want to change to: ")
             
             for old_data in cursor.execute(f"SELECT {data_type} FROM contact_info WHERE Name = '{name}'"):
                 print('changes:')
@@ -80,26 +77,27 @@ def execute(commands: list):
     if command_len > 0 and commands[0] in command_list:
         if (command_len < command_requirments[commands[0]]):
             print("More information required to execute the given command")
-            print("Type help for more information")
-        elif commands[0] == "create":
-            add(" ".join(commands[3:]), commands[2], commands[1])
-        elif commands[0] == "delete":
-            delete(commands[1])
-        elif commands[0] == "update":
-            update(" ".join(commands[2:]), commands[1])
-        elif commands[0] == "find":
-            search(commands[1], commands[2])
-        elif commands[0] == "preview":
-            preview()
-        elif commands[0] == "save":
-            conn.commit()
-        elif commands[0] == "help":
-            try:
-                help_command(commands[1])
-            except IndexError:
-                help_command()
-        elif commands == "clear":
-            clear()
+            print(f"Type help or help {commands[0]} for more information")
+        else:
+            if commands[0] == "create":
+                add(" ".join(commands[3:]), commands[2], commands[1])
+            elif commands[0] == "delete":
+                delete(commands[1])
+            elif commands[0] == "update":
+                update(" ".join(commands[2:]), commands[1])
+            elif commands[0] == "find":
+                search(commands[1], commands[2])
+            elif commands[0] == "preview":
+                preview()
+            elif commands[0] == "save":
+                conn.commit()
+            elif commands[0] == "help":
+                try:
+                    help_command(commands[1])
+                except IndexError:
+                    help_command()
+            elif commands[0] == "clear":
+                clear()
     else:
         print("Invalid command")
 
