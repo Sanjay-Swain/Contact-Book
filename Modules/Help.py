@@ -4,12 +4,11 @@ from colorama import Fore, Style
 help_str = """
 Commands:
     create <email> <Phone> <Name>
-    delete <name>
+    delete <ID>
     update <data to be changed: name|phone|email> <old name to be changed>
     find <data to be found: name|phone|email> <data to search>
     preview
     clear
-    save
     exit
 You can also type help <command> to get a little more info
 """ + Fore.RED +"""NOTE: For commands like create and delete the trailing data will be considered as a part of name.
@@ -22,8 +21,8 @@ For example to add a contact:
 """ + Fore.RED + "NOTE: All of the details be separated by spaces and all last trailing data will be considered as a part of name." + Style.RESET_ALL
 
 delete_help_str = """Command:
-    delete <name>
-""" + Fore.RED + "NOTE: You must enter the complete exact name (it is case sensitive too)." + Style.RESET_ALL
+    delete <ID>
+""" + Fore.RED + "NOTE: You must enter the exact ID." + Style.RESET_ALL
 
 update_help_str = """Command:
     update <data to be changed: name|phone|email> <old name to be changed>
@@ -39,9 +38,6 @@ Example:
 
 preview_help_str = "This will simply print the current live database"
 
-save_help_str = """This simple command will commit every recent changes to the database.
-If you directly close the console without using save command then the recent changes will be lost."""
-
 exit_help_str = """This will commit recent changes to the database and will stop the program."""
 
 clear_help_str = """This will clear the console window"""
@@ -50,7 +46,6 @@ help_func = {
     "create": create_help_str,
     "delete": delete_help_str,
     "update": update_help_str,
-    "save": save_help_str,
     "find": find_help_str,
     "exit": exit_help_str,
     "preview": preview_help_str,

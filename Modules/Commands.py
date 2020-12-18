@@ -9,12 +9,14 @@ import os
 
 
 def add(name, phone, email):
-    command = f"INSERT INTO contact_info VALUES ('{name}', '{phone}', '{email}')"
+    command = f"INSERT INTO contact_info (Name, Phone, Email) VALUES ('{name}', '{phone}', '{email}')"
     cursor.execute(command)
+    conn.commit()
 
 
-def delete(name):
-    cursor.execute(f"DELETE FROM contact_info WHERE name = '{name}'")
+def delete(ID):
+    cursor.execute(f"DELETE FROM contact_info WHERE ID = '{ID}'")
+    conn.commit()
 
 
 def check_contact_exist(data_type, data_val, everything=False):
@@ -59,6 +61,7 @@ def update(name, data_type):
                 print(Fore.LIGHTGREEN_EX + new_data, end='')
                 print(Style.RESET_ALL)
             cursor.execute(f"UPDATE contact_info SET {data_type.capitalize()} = '{new_data}' WHERE Name = '{name}'")
+            conn.commit()
     except sqlite3.OperationalError:
         print(f'Oops!! There are no columns named {data_type}')
         print('You must select from Name, Phone & Email')
@@ -89,8 +92,6 @@ def execute(commands: list):
                 search(commands[1], commands[2])
             elif commands[0] == "preview":
                 preview()
-            elif commands[0] == "save":
-                conn.commit()
             elif commands[0] == "help":
                 try:
                     help_command(commands[1])
@@ -102,16 +103,15 @@ def execute(commands: list):
         print("Invalid command")
 
 
-tab = PrettyTable(['Name', 'Phone', 'Email'])
+tab = PrettyTable(['ID', 'Name', 'Phone', 'Email'])
 
-command_list = ["create", "delete", "update", "find", "preview", "save", "exit", "help", "clear"]
+command_list = ["create", "delete", "update", "find", "preview", "exit", "help", "clear"]
 command_requirments = {
     "create": 4,
     "delete": 2,
     "update": 3,
     "find": 3,
     "preview": 1,
-    "save": 1,
     "help": 1,
     "clear": 1
 }

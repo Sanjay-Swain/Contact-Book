@@ -6,16 +6,15 @@ colorama.init()
 
 print("Welcome")
 print("Type help to know the commands")
-print()
 
-cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (Name char(25) PRIMARY KEY, Phone char(25), Email char(40))')
+cursor.execute('CREATE TABLE IF NOT EXISTS contact_info (ID INTEGER PRIMARY KEY AUTOINCREMENT, Name char(25), Phone char(25), Email char(40))')
 
 
 def main():
     running = True
 
     while running:
-        command_input = input("---> ").strip().split()
+        command_input = input("--> ").strip().split()
         if command_input[0] == "exit":
             verify = input("Are you sure you want to leave (Y|N) :")
             if verify[0].strip().lower() == 'y':
